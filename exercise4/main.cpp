@@ -9,30 +9,28 @@
 
 SC_MODULE(toplevel) {
     // Declare places and transitions
-    place<1,1> p1;         // First place
-    place<1,1> p2;         // Second place
-    place<1,1> p3;         // Third place
-    place<1,1> p4;         // Fourth place 
+    place<1,1> IDLE;
+    place<1,1> ACTIVE;
 
-    transition<1,2> t1;    // Transition from p1 to p2
-    transition<2,1> t2;    // Transition from p2 to p1
-    transition<1,1> t3;    // Transition from p2 to p1
+    transition<1,1> ACT;
+    transition<1,1> WR;
+    transition<1,1> PRE;
+    transition<1,1> RD;
 
     SC_CTOR(toplevel) 
-        : p1(1), p2(0), p3(0), p4(0), t1("t1"), t2("t2"), t3("t3") {
-        // Connect ports for t1
-        t1.in.bind(p1);
-        t1.out(p2);
-        t1.out(p3);
+        : IDLE(1), ACTIVE(0), ACT("ACT"), WR("WR"), PRE("PRE"), RD("RD") {
+        
+        ACT.in.bind(IDLE);
+        ACT.out.bind(ACTIVE);
 
-        // Connect ports for t2
-        t2.in.bind(p2);
-        t2.in.bind(p4);
-        t2.out.bind(p1);
+        WR.in.bind(ACTIVE);
+        WR.out.bind(ACTIVE);
 
-        // Connect ports for t3
-        t3.in.bind(p3);
-        t3.out.bind(p4);
+        RD.in.bind(ACTIVE);
+        RD.out.bind(ACTIVE);
+
+        PRE.in.bind(ACTIVE);
+        PRE.out.bind(IDLE);
 
         // Define the test process
         SC_THREAD(process);
@@ -43,17 +41,23 @@ SC_MODULE(toplevel) {
         while (true)
         {
             wait(10, SC_NS);
-            t1.fire();
+            ACT.fire();
 
             wait(10, SC_NS);
-            t2.fire();
+            ACT.fire();
 
             wait(10, SC_NS);
-            t3.fire();
+            RD.fire();
 
             wait(10, SC_NS);
-            t2.fire();
+            WR.fire();
 
+            wait(10, SC_NS);
+            PRE.fire();
+
+            wait(10, SC_NS);
+            ACT.fire();
+            
             sc_stop();
         }
     }
