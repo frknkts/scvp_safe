@@ -9,9 +9,10 @@ class placeInterface: public sc_interface{
 
 public:
     // Virtual functions which need to be implemented by the class inheriting them
-    virtual void addTokens(unsigned int n) = 0;
-    virtual void removeTokens(unsigned int n) = 0;
-    virtual unsigned int testTokens() = 0;
+    virtual void addTokens() = 0;
+    virtual void removeTokens() = 0;
+    // virtual unsigned int testTokens() = 0;
+    virtual bool testTokens() = 0;
 
     virtual ~placeInterface() {}
 };
@@ -19,6 +20,7 @@ public:
 // Place Channel:
 // TODO
 
+template<unsigned int Win = 1, unsigned int Wout = 1>
 class place : public placeInterface {
     private:
 
@@ -29,18 +31,16 @@ class place : public placeInterface {
     // Constructor to initialize the tokens
     place(unsigned int initial_tokens = 0) : tokens(initial_tokens) {}
 
-    void addTokens(unsigned int n) override 
+    void addTokens() override 
     {
-        // tokens = tokens + n;
-        tokens += n;
+        tokens += Win;
     }
 
-    void removeTokens(unsigned int n) override 
+    void removeTokens() override 
     {
-        if (tokens >= n)
+        if (testTokens())
         {
-            // tokens = tokens - n;
-            tokens -= n;
+            tokens -= Wout;
         }
         // else 
         // {
@@ -48,9 +48,9 @@ class place : public placeInterface {
         // }
     }
 
-    unsigned int testTokens() override 
+    bool testTokens() override 
     {
-        return tokens;
+        return (tokens >= Wout) ;
     }
 };
 

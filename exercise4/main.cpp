@@ -9,10 +9,10 @@
 
 SC_MODULE(toplevel) {
     // Declare places and transitions
-    place p1;         // First place
-    place p2;         // Second place
-    place p3;         // Third place
-    place p4;         // Fourth place 
+    place<1,1> p1;         // First place
+    place<1,1> p2;         // Second place
+    place<1,1> p3;         // Third place
+    place<1,1> p4;         // Fourth place 
 
     transition<1,2> t1;    // Transition from p1 to p2
     transition<2,1> t2;    // Transition from p2 to p1

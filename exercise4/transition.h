@@ -35,12 +35,12 @@ SC_MODULE(transition)
                 
         for ( unsigned int i=0 ; i < N; i++ )
         {
-            in[i]->removeTokens(1);
+            in[i]->removeTokens();
         }
                 
         for ( unsigned int i=0 ; i < M; i++ )
         {
-            out[i]->addTokens(1);
+            out[i]->addTokens();
         }
         
         std::cout << this->name() << ": Fired" << std::endl;
