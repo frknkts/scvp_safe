@@ -35,3 +35,4 @@
 systemc*
 /build/
 /SCVP.artifacts/*
+*/build/
