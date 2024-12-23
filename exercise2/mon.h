@@ -8,13 +8,14 @@ SC_MODULE(Monitor)
 {
 public:
     sc_in<bool> A, B, Z;
+    sc_in<bool> clk;
 
     SC_CTOR(Monitor)
     {
         std::cout << std::endl <<  "time\tA\tB\tF" << std::endl;
         SC_METHOD(monitor);
-        sensitive << A << B << Z;
         dont_initialize();
+        sensitive << clk.pos();
     }
 
 private:
