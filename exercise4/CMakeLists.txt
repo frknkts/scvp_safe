@@ -12,7 +12,7 @@ target_include_directories(exercise4
 
 find_library(SYSTEMC_LIBRARY 
     NAMES systemc
-    PATHS $ENV{SYSTEMC_HOME}/lib-$ENV{SYSTEMC_TARGET_ARCH}/
+    PATHS $ENV{SYSTEMC_HOME}/lib/
 )
 
 target_link_libraries(exercise4
