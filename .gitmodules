@@ -1,0 +1,3 @@
+[submodule "scvp.artifacts"]
+	path = scvp.artifacts
+	url = https://github.com/frknkts/SCVP.artifacts.git
