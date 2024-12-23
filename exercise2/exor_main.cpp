@@ -22,7 +22,16 @@ int sc_main(int, char**)
     mon.B(sigB);
     mon.Z(sigZ);
 
+    // Setup Waveform Tracing:
+    sc_trace_file *wf = sc_create_vcd_trace_file("traceFile");
+    sc_trace(wf, sigA, "A");
+    sc_trace(wf, sigB, "B");
+    sc_trace(wf, sigZ, "Z");
+
     sc_start();  // run forever
+
+    // Close Trace File:
+    sc_close_vcd_trace_file(wf);
 
     return 0;
 }
