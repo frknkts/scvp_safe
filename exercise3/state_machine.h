@@ -64,7 +64,10 @@ SC_MODULE(stateMachine){
                 if (input.read()=='G'){
                     next_state = GAAG;
                     sequencecounter++;
-                    std::cout << "State GAAG No."<< sequencecounter << " reached at position " << inputcounter << std::endl;
+                    std::cout << "State GAA{2,}+G No."<< sequencecounter << " reached at position " << inputcounter << std::endl;
+                }
+                else if (input.read()=='A'){
+                    next_state = GAA;
                 }
                 else {
                     next_state = Start;
