@@ -12,6 +12,8 @@
 #include <tlm.h>
 #include <tlm_utils/tlm_quantumkeeper.h>
 
+// Use quantumkeeping via PRE-Processor
+#define USEQK
 
 class processor : public sc_module, tlm::tlm_bw_transport_if<>
 {
@@ -22,6 +24,10 @@ private:
 	// Method:
     void processTrace();
     void processRandom();
+
+	#ifdef USEQK
+		tlm_utils::tlm_quantumkeeper quantumkeeper;
+	#endif
 
 public:
 	tlm::tlm_initiator_socket<> iSocket;
@@ -50,9 +56,14 @@ processor::processor(sc_module_name, std::string pathToFile, sc_time cycleTime) 
 	if (!file.is_open())
 		SC_REPORT_FATAL(name(), "Could not open trace");
 
-    SC_THREAD(processTrace);
-
 	iSocket.bind(*this);
+    // SC_THREAD(processTrace);
+	SC_THREAD(processRandom);
+
+	#ifdef USEQK
+        quantumkeeper.set_global_quantum(sc_time(100000,SC_NS)); // STATIC!
+        quantumkeeper.reset();
+	#endif
 }
 
 // Use the command below in a termial to get your gcc version.
@@ -226,12 +237,29 @@ void processor::processRandom()
         cycles = distrCycle(randGenerator);
         address = distrAddr(randGenerator);
 
-        sc_time delay = cycles * cycleTime;
+		#ifdef USEQK
+			sc_time delay =	quantumkeeper.get_local_time();
+		#else
+        	sc_time delay = cycles * cycleTime;
+		#endif
 
         trans.set_address(address);
         iSocket->b_transport(trans, delay);
 
-        wait(delay);
+
+		#ifdef USEQK
+            quantumkeeper.set(delay); // Anotate the time of the target
+            quantumkeeper.inc(sc_time(10,SC_NS)); // Consume computation time
+		#else
+        	wait(delay);
+		#endif
+
+		#ifdef USEQK
+            if(quantumkeeper.need_sync())
+            {
+				     quantumkeeper.sync();
+            }
+		#endif
     }
 
     // End Simulation because there are no events.
