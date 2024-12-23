@@ -9,9 +9,13 @@
 
 int sc_main (int, char **)
 {
-    processor cpu0("cpu0", "stimuli1.txt", sc_time(1, SC_NS));
+    processor * cpu0 = new processor("cpu0", "stimuli1.txt", sc_time(1, SC_NS));
 
     // TODO: add your code here
+
+    memory<1024> * memory0 = new memory("memory0");
+
+    cpu0->iSocket.bind(memory0->tSocket);
 
     std::cout << std::endl << "Name "
               << std::setfill(' ') << std::setw(10)
