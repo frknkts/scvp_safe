@@ -1,0 +1,3 @@
+[submodule "SCVP.artifacts"]
+	path = SCVP.artifacts
+	url = https://github.com/TUK-SCVP/SCVP.artifacts.git
