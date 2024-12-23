@@ -26,5 +26,5 @@ Implement inhibitor arcs.
 
 # Task 6
 
-Modell two memory banks in a hierarchal petri net shown in the task description. 
+Modell two memory banks in a hierarchical petri net shown in the task description. 
 

@@ -9,28 +9,20 @@
 
 SC_MODULE(toplevel) {
     // Declare places and transitions
+    // Has Weights on the arcs of 1, but holds 2 tokens at the beginning
     place<1,1> IDLE;
-    place<1,1> ACTIVE;
 
-    transition<1,1> ACT;
-    transition<1,1> WR;
-    transition<1,1> PRE;
-    transition<1,1> RD;
+    subnet s1;
+    subnet s2;
 
     SC_CTOR(toplevel) 
-        : IDLE(1), ACTIVE(0), ACT("ACT"), WR("WR"), PRE("PRE"), RD("RD") {
+        : IDLE(2), s1("s1"), s2("s2") {
         
-        ACT.in.bind(IDLE);
-        ACT.out.bind(ACTIVE);
-
-        WR.in.bind(ACTIVE);
-        WR.out.bind(ACTIVE);
-
-        RD.in.bind(ACTIVE);
-        RD.out.bind(ACTIVE);
-
-        PRE.in.bind(ACTIVE);
-        PRE.out.bind(IDLE);
+        s1.ACT.in.bind(IDLE);
+        s1.PRE.out.bind(IDLE);
+        
+        s2.ACT.in.bind(IDLE);
+        s2.PRE.out.bind(IDLE);
 
         // Define the test process
         SC_THREAD(process);
@@ -41,23 +33,36 @@ SC_MODULE(toplevel) {
         while (true)
         {
             wait(10, SC_NS);
-            ACT.fire();
+            s1.ACT.fire();
 
             wait(10, SC_NS);
-            ACT.fire();
+            s1.ACT.fire();
 
             wait(10, SC_NS);
-            RD.fire();
+            s1.RD.fire();
 
             wait(10, SC_NS);
-            WR.fire();
+            s1.WR.fire();
 
             wait(10, SC_NS);
-            PRE.fire();
+            s1.PRE.fire();
 
             wait(10, SC_NS);
-            ACT.fire();
-            
+            s1.ACT.fire();
+
+            wait(10, SC_NS);
+            s2.ACT.fire();
+
+            wait(10, SC_NS);
+            s2.ACT.fire();
+
+            wait(10, SC_NS);
+            s1.PRE.fire();
+
+            wait(10, SC_NS);
+            s2.PRE.fire();
+
+            wait(10, SC_NS);
             sc_stop();
         }
     }
