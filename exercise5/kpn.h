@@ -31,10 +31,10 @@ public:
         SC_THREAD(delay);
         SC_THREAD(split);
 
-        sensitive   << a.data_read_event() << a.data_written_event() 
-                    << b.data_read_event() << b.data_written_event() 
-                    << c.data_read_event() << c.data_written_event() 
-                    << d.data_read_event() << d.data_written_event();
+        // sensitive   << a.data_read_event() << a.data_written_event() 
+        //             << b.data_read_event() << b.data_written_event() 
+        //             << c.data_read_event() << c.data_written_event() 
+        //             << d.data_read_event() << d.data_written_event();
     }
 
 };
