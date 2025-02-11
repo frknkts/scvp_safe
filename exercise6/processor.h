@@ -238,7 +238,7 @@ void processor::processRandom()
         address = distrAddr(randGenerator);
 
 		#ifdef USEQK
-			sc_time delay =	quantumkeeper.get_local_time();
+			sc_time delay =	quantumkeeper.get_local_time() + cycles * cycleTime;
 		#else
         	sc_time delay = cycles * cycleTime;
 		#endif
