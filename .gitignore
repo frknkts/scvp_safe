@@ -36,3 +36,4 @@ systemc*
 /build/
 /SCVP.artifacts/*
 */build/
+.vscode/
