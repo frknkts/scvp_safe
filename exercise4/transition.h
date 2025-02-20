@@ -30,7 +30,7 @@ SC_MODULE(transition)
         // Tested before in since typically less ports of this type
         for ( unsigned int j = 0 ; j < L ; j++)
         {
-            if ( inhibitors[j]->testTokens() != 0)
+            if ( inhibitors[j]->testTokens() != false)
             {
                 std::cout << this->name() << ": NOT Fired" << std::endl;
                 return;
@@ -40,7 +40,7 @@ SC_MODULE(transition)
         // Test if all input places have at least one token
         for ( unsigned int i = 0 ; i < N; i++ )
         {
-            if ( in[i]->testTokens() == 0)
+            if ( in[i]->testTokens() != true)
             {
                 std::cout << this->name() << ": NOT Fired" << std::endl;
                 return;

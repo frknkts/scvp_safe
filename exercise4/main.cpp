@@ -12,17 +12,16 @@ SC_MODULE(toplevel) {
     // Has Weights on the arcs of 1, but holds 2 tokens at the beginning
     place<1,1> IDLE;
 
-    subnet s1;
-    subnet s2;
+    subnet s1, s2;
 
     SC_CTOR(toplevel) 
         : IDLE(2), s1("s1"), s2("s2") {
         
-        s1.ACT.in.bind(IDLE);
-        s1.PRE.out.bind(IDLE);
+        s1.in.bind(IDLE);
+        s1.out.bind(IDLE);
         
-        s2.ACT.in.bind(IDLE);
-        s2.PRE.out.bind(IDLE);
+        s2.in.bind(IDLE);
+        s2.out.bind(IDLE);
 
         // Define the test process
         SC_THREAD(process);

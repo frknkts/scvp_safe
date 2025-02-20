@@ -11,6 +11,10 @@
 
 // Based on toplevel from previous Task
 SC_MODULE(subnet) {
+    // Instanciate In and Out ports
+    sc_port<placeInterface, 1, SC_ALL_BOUND> in;
+    sc_port<placeInterface, 1, SC_ALL_BOUND> out;
+
     // Declare places and transitions
     place<1,1> ACTIVE;
 
@@ -24,6 +28,7 @@ SC_MODULE(subnet) {
         : ACTIVE(0), ACT("ACT"), WR("WR"), PRE("PRE"), RD("RD") {
         
         // ACT.in.bind(IDLE); <- Is connected in toplevel
+        ACT.in.bind(in);
         ACT.out.bind(ACTIVE);
         ACT.inhibitors.bind(ACTIVE);
 
@@ -34,6 +39,7 @@ SC_MODULE(subnet) {
         RD.out.bind(ACTIVE);
 
         PRE.in.bind(ACTIVE);
+        PRE.out.bind(out);
         // PRE.out.bind(IDLE); <- Is connected in toplevel
     }
 

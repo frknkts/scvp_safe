@@ -11,7 +11,6 @@ public:
     // Virtual functions which need to be implemented by the class inheriting them
     virtual void addTokens() = 0;
     virtual void removeTokens() = 0;
-    // virtual unsigned int testTokens() = 0;
     virtual bool testTokens() = 0;
 
     virtual ~placeInterface() {}
@@ -19,7 +18,6 @@ public:
 
 // Place Channel:
 // TODO
-
 template<unsigned int Win = 1, unsigned int Wout = 1>
 class place : public placeInterface {
     private:
@@ -31,21 +29,15 @@ class place : public placeInterface {
     // Constructor to initialize the tokens
     place(unsigned int initial_tokens = 0) : tokens(initial_tokens) {}
 
-    void addTokens() override 
-    {
+    void addTokens() override {
         tokens += Win;
     }
 
-    void removeTokens() override 
-    {
+    void removeTokens() override {
         if (testTokens())
         {
             tokens -= Wout;
         }
-        // else 
-        // {
-        //     SC_REPORT_WARNING("place", "Attempt to remove more tokens than available.");
-        // }
     }
 
     bool testTokens() override 
