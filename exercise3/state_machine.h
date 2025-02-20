@@ -7,8 +7,9 @@ SC_MODULE(stateMachine){
     sc_in<char> input;
     sc_in<bool> clk;
 
-    enum base {Start, G, GA, GAA, GAAG};
-    base current_state, next_state;
+    enum base {START, G, GA, GAA, GAAG};
+
+    sc_signal<base> state;
 
     int inputcounter = 0 , sequencecounter = 0;
 
@@ -18,76 +19,57 @@ SC_MODULE(stateMachine){
         dont_initialize();
     }
 
-    void process(){
+    void process() {
 
-        current_state = next_state;
         inputcounter++;
         // std::cout << inputcounter << " " << input.read() <<" @ " << sc_time_stamp() << std::endl;
 
-        switch(current_state){
-
-            case Start:
-                if (input.read()=='G'){
-                    next_state = G;
+        switch(state){
+            case START: 
+                if (input.read() == 'G'){
+                    state = G;
+                } else {
+                    state = START;
                 }
-                else{
-                    next_state = Start;
-                }
-                break;
-
+            break;
             case G:
-                if (input.read()=='G'){
-                    next_state = current_state;
+                if (input.read() == 'A'){
+                    state = GA;
+                } else if (input.read() == 'G'){
+                    state = G;
+                } else {
+                    state = START;
                 }
-                else if (input.read()=='A'){
-                    next_state = GA;
-                }
-                else {
-                    next_state = Start;
-                }
-                break;
-
+            break;
             case GA:
-                if (input.read()=='G'){
-                    next_state = G;
-                
+                if (input.read() == 'A'){
+                    state = GAA;
+                } else if (input.read() == 'G'){
+                    state = G;
+                } else {
+                    state = START;
                 }
-                else if (input.read()=='A'){
-                    next_state = GAA;
-                }
-                else {
-                    next_state = Start;
-                }
-                break;
-
+            break;
             case GAA:
-                if (input.read()=='G'){
-                    next_state = GAAG;
+                if (input.read() == 'G'){
+                    state = GAAG;
                     sequencecounter++;
                     std::cout << "State GAA{2,}+G No."<< sequencecounter << " reached at position " << inputcounter << std::endl;
+                } else if (input.read() == 'A'){
+                    state = GAA;
+                } else {
+                    state = START;
                 }
-                else if (input.read()=='A'){
-                    next_state = GAA;
-                }
-                else {
-                    next_state = Start;
-                }
-                break;
-
+            break;
             case GAAG:
-                if (input.read()=='G'){
-                    next_state = G;
+                if (input.read() == 'G'){
+                    state = G;
+                } else {
+                    state = START;
                 }
-                else {
-                    next_state = Start;
-                }
-                break;
-
-            default:
-                next_state = Start;
-                break;
+            break;
         }
-    };
+    }
 };
 
 #endif // STATE_MACHINE_H
