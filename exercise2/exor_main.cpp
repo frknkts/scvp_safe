@@ -8,6 +8,7 @@ int sc_main(int, char**)
 {
     sc_signal<bool> sigA, sigB, sigZ;
 
+    // label, period, time unit, duty cycle, start time, time unit for start time 
     sc_clock clk("clk", 1, SC_NS, 0.5, 0, SC_NS, true);
 
     stim Stim1("Stimulus");
